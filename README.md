@@ -21,9 +21,6 @@ mvn --version
 git clone https://github.com/MartinMaenniste/Nutikas-Restorani-Serveerimiss-steem.git
 cd https://github.com/MartinMaenniste/Nutikas-Restorani-Serveerimissysteem.git
 
-#Kompileerimine - vaid esmakäivitamisel (või peale koodis muudatuste tegemist)
-mvn compile
-
 #Programmi jooksutamine
 mvn spring-boot:run
 ```
