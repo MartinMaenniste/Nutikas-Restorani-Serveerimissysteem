@@ -1,4 +1,7 @@
-package com.example.Nutikas_Restorani_Serveerimissysteem;
+package com.example.nutikas_restorani_serveerimissysteem;
+
+import com.example.nutikas_restorani_serveerimissysteem.logic.ServeClient;
+import com.example.nutikas_restorani_serveerimissysteem.logic.Tables;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

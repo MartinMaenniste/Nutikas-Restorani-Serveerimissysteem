@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Restaurant</title>
+    <style>
+	div > p {
+  	    text-align: center;
+	}
+
+	.inside {
+	    display: table;
+	    background: #454444;
+	    width: 450px;
+	}
+	.outside {
+	    display: table;
+	    margin-right: 0;
+	    padding-top: 20px;
+	    background: #40342a;
+	    width: 450px;
+	}
+
+	.left {
+	    display: inline-block;
+	}
+	.right {
+	    display: inline-block;
+	    float: right;
+	    margin-right: 10px;
+	}
+
+	.sideBySide {
+	    display: flex;
+	}
+
+        .smallTable {
+	    background: #c1c918;
+	    width: 50px;
+	    height: 50px;
+	    margin: 10px;
+	}
+	.mediumTable {
+	    background: #8f5d1b;
+	    height: 50px;
+	    width: 150px;
+	    margin: 10px;
+	    margin-left: auto;
+	    margin-right: auto;
+	}
+	.mediumTable2 {
+	    background: #c97d18;
+	    height: 50px;
+	    width: 200px;
+	    margin: 10px;
+	}
+	.bigTable {
+	    background: #523a1c;
+	    width: 70px;
+	    height: 200px;
+	    margin: 10px;
+	    margin-left: auto;
+	}
+	.counter {
+	    background: #662b1d;
+	    width: 100px;
+	    height: 150px;
+	    margin: 10px;
+	    margin-top: 60px;
+	}
+	#suggestedTable {
+	    background: #b32319;
+	}
+    </style>
+  </head>
+  <body>
+    <h1>Your reservation</h1>
+      <div class="inside">
+	<div class="left">
+	  <div>
+	      <div th:class="${table1.SizeName}" th:id="${table1.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table1.MaxSeats}"></p></div>
+	      <div th:class="${table2.SizeName}" th:id="${table2.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table2.MaxSeats}"></p></div>
+	  </div>
+	  <div>
+              <div class="counter"></div>
+	  </div>
+	</div>
+	<div class="right">
+	  <div>
+	      <div th:class="${table3.SizeName}" th:id="${table3.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table3.MaxSeats}"></p></div>
+          </div>
+	  <div>
+	      <div th:class="${table4.SizeName}" th:id="${table4.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table4.MaxSeats}"></p></div>
+	      <div th:class="${table5.SizeName}" th:id="${table5.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table5.MaxSeats}"></p></div>
+	  </div>
+	</div>
+      </div>
+      <div class="outside">
+        <div class="left">
+	  <div class="sideBySide">
+	      <div th:class="${table6.SizeName}" th:id="${table6.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table6.MaxSeats}"></p></div>
+	      <div th:class="${table7.SizeName}" th:id="${table7.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table7.MaxSeats}"></p></div>
+	  </div>
+	  <div class="sideBySide">
+	      <div th:class="${table8.SizeName}" th:id="${table8.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table8.MaxSeats}"></p></div>
+	      <div th:class="${table9.SizeName}" th:id="${table9.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table9.MaxSeats}"></p></div>
+	  </div>
+	</div>
+	<div class="right">
+	  <div>
+	      <div th:class="${table10.SizeName}" th:id="${table10.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table10.MaxSeats}"></p></div>
+	  </div>
+	  <div>
+	      <div th:class="${table11.SizeName}" th:id="${table11.DisplayAsSuggested} ? 'suggestedTable' : ''"><p th:text="${table11.MaxSeats}"></p></div>
+	  </div>
+	</div>
+      </div>
+  </body>
+</html>
