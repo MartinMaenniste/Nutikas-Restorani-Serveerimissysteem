@@ -45,7 +45,7 @@ public class ServeClient {
         long start = stringDateTimetoInt(mForm.getDate(), mForm.getStartTime());
         long end = stringDateTimetoInt(mForm.getDate(), mForm.getEndTime());
 
-        System.out.println("Start: " + start + ", End: " + end); // Testing
+        //System.out.println("Start: " + start + ", End: " + end); // Testing
 
         return mTables.reserveTable(start, end, mForm.getGuests());
     }

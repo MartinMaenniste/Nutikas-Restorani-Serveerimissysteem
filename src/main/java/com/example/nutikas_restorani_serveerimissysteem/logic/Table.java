@@ -1,11 +1,14 @@
 package com.example.nutikas_restorani_serveerimissysteem.logic;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Table {
 	private int mMaxSeats;
 	private String mSizeName; // Name of the size of the table - small/medium/big
 	private boolean mDisplayAsSuggested;
 
-	private long[][] mReservationsArray; // array that holds long[2] - start and end of reservation
+	private List<long[]> mReservationsArray; // array that holds long[2] - start and end of reservation
 					   // yyyymmddhhmm - as long
 	private int mTotalReservations;
 	// String type - out/in/...
@@ -14,24 +17,19 @@ public class Table {
 		// Delete outdated
 		// sort by start - smaller numbers first (dates that come sooner)
 	}
-	private void increaseArraySize() {
-		long[][] newArray = new long[mReservationsArray.length * 2][2];
-		for(int i = 0; i < newArray.length; i++) {
-			newArray[i] = mReservationsArray[i];
-		}
-		mReservationsArray = newArray;
-	}
 
 	public Table() {
 		this.mMaxSeats = 0;
+		this.mTotalReservations = 0;
 		this.mDisplayAsSuggested = false;
-		this.mReservationsArray = new long[2][2];
+		this.mReservationsArray = new ArrayList<long[]>();
 	}
 	public Table(int maxSeats, String sizeName) { 
 		this.mMaxSeats = maxSeats;
+		this.mTotalReservations = 0;
 		this.mSizeName = sizeName;
 		this.mDisplayAsSuggested = false;
-		this.mReservationsArray = new long[2][2];
+		this.mReservationsArray = new ArrayList<long[]>();
 		}
 	
 	public void setMaxSeats(int max) { this.mMaxSeats = max; }
@@ -41,23 +39,31 @@ public class Table {
 	public int getMaxSeats() { return this.mMaxSeats; }
 	public String getSizeName() { return this.mSizeName; }
 	public boolean getDisplayAsSuggested() { return this.mDisplayAsSuggested; }
+	public List<long[]> getReservationsArray() { return this.mReservationsArray; }
 	
 
 	public boolean isFreeDuring(long start, long end) {
 			this.sortReservations(); // Sort every time so it's more predictable - and so outdated info is removed
 
-			for(long[] r : mReservationsArray) {
-				if( !(end < r[0] || start > r[0]) )
+			/*int size = mReservationsArray.size();
+			for (int i = 0; i < size; i++) {
+				if( !(end < mReservationsArray.get(i)[0] || start > mReservationsArray.get(i)[1]) )
 					return false;
+			}*/
+
+			for(long[] r : mReservationsArray) {
+				if( !(end < r[0] || start > r[1]) ) {
+					return false;
+				}
 			}
 			return true;
 	}
 	public void addReservation(long start, long end) {
-		if (mReservationsArray.length == mTotalReservations)
-			this.increaseArraySize();
+		long[] reservation = new long[2];
 
-		mReservationsArray[mTotalReservations][0] = start;
-		mReservationsArray[mTotalReservations][1] = end;
-		mTotalReservations++;
+		reservation[0] = start;
+		reservation[1] = end;
+
+		mReservationsArray.add(reservation);
 	}
 }
