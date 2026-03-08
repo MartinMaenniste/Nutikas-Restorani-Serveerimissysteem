@@ -10,6 +10,25 @@ public class ServeClient {
     private final Tables mTables;
     private FormInfo mForm;
 
+    private long stringDateTimetoInt(String date, String time) {
+        long dateTime = 0;
+
+        String[] dateParts = date.split("-");
+        String[] timeParts = time.split(":");
+
+        for(int i = 0; i < dateParts.length; i++) {
+            dateTime += Long.parseLong(dateParts[i]);
+            dateTime *= 100;
+        }
+        
+        dateTime += Integer.parseInt(timeParts[0]);
+        dateTime *= 100;
+        dateTime += Integer.parseInt(timeParts[1]);
+
+//Name: John, Guests: 10, Date: 2026-03-11, Start time: 10:30, End time: 11:45
+        return dateTime;
+    }
+
     public ServeClient(Tables tables) {
         this. mTables = tables;
     }
@@ -22,10 +41,13 @@ public class ServeClient {
     public void printAllTables() {
         mTables.printAllTables();
     }
-    public void reserveTable() {
-        // Currently just tests if tables are displayed correctly
-        int n = 5;
-        mTables.reserveTable(n);
+    public boolean reserveTable() {
+        long start = stringDateTimetoInt(mForm.getDate(), mForm.getStartTime());
+        long end = stringDateTimetoInt(mForm.getDate(), mForm.getEndTime());
+
+        System.out.println("Start: " + start + ", End: " + end); // Testing
+
+        return mTables.reserveTable(start, end, mForm.getGuests());
     }
 
     

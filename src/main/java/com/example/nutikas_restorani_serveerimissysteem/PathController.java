@@ -28,8 +28,9 @@ public class PathController {
 		//sc.printAllTables(); // Testing
 
 		sc.setForm(form);
-		sc.reserveTable();
-
+		boolean foundTable = sc.reserveTable();
+		model.addAttribute("reservationInfo", foundTable ? "Your reservation" : "No suitable table found");
+		
 		// Since the tables are styled, inject fields individually, by the index.
 		Table[] tables = sc.getTables();
 		for( int i = 0; i < tables.length; i++ ) {
