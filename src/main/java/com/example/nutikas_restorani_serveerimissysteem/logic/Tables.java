@@ -43,6 +43,13 @@ public class Tables{
 
 	public boolean reserveTable(long startDateTime, long endDateTime, int guests) {
 		int[] freeTables = getFreeTablesIndexesDuring(startDateTime, endDateTime);
+
+		for(Table t : mTables) {
+			t.setDisplayAsReserved(true);
+		}
+		for(int i : freeTables) {
+			mTables[i].setDisplayAsReserved(false);
+		}
 		
 		
 		// Choose the closest max seats compared to amount of guests
@@ -62,12 +69,6 @@ public class Tables{
 
 		mTables[closestIndex].setDisplayAsSuggested(true);
 		mTables[closestIndex].addReservation(startDateTime, endDateTime);
-
-		/*System.out.println("Reservations:");
-		List<long[]> reservations = mTables[closestIndex].getReservationsArray();
-		for(long[] r : reservations) {
-			System.out.println("Start: " + r[0] + ", End: " + r[1]);
-		}*/
 
 		return true;
 	}

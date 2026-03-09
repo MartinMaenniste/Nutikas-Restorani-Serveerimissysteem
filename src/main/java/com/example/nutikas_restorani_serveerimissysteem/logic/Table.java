@@ -7,6 +7,7 @@ public class Table {
 	private int mMaxSeats;
 	private String mSizeName; // Name of the size of the table - small/medium/big
 	private boolean mDisplayAsSuggested;
+	private boolean mDisplayAsReserved;
 
 	private List<long[]> mReservationsArray; // array that holds long[2] - start and end of reservation
 					   // yyyymmddhhmm - as long
@@ -34,11 +35,13 @@ public class Table {
 	
 	public void setMaxSeats(int max) { this.mMaxSeats = max; }
 	public void setSizeName(String sizeName) { this.mSizeName = sizeName; }
-	public void setDisplayAsSuggested(boolean isSuggested) { mDisplayAsSuggested = isSuggested; }
+	public void setDisplayAsSuggested(boolean isSuggested) { this.mDisplayAsSuggested = isSuggested; }
+	public void setDisplayAsReserved(boolean isReserved) { this.mDisplayAsReserved = isReserved; }
 
 	public int getMaxSeats() { return this.mMaxSeats; }
 	public String getSizeName() { return this.mSizeName; }
 	public boolean getDisplayAsSuggested() { return this.mDisplayAsSuggested; }
+	public boolean getDisplayAsReserved() { return this.mDisplayAsReserved; }
 	public List<long[]> getReservationsArray() { return this.mReservationsArray; }
 	
 
