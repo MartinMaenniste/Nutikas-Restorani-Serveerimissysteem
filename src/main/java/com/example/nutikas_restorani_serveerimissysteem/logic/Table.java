@@ -14,6 +14,7 @@ public class Table {
 	private List<long[]> mReservationsArray; // array that holds long[2] - start and end of reservation
 					   // yyyymmddhhmm - as long
 
+	private String[] mTableTypes;
 	// String type - out/in/...
 
 	private void sortReservations() {
@@ -40,11 +41,12 @@ public class Table {
 		this.mDisplayAsSuggested = false;
 		this.mReservationsArray = new ArrayList<long[]>();
 	}
-	public Table(int maxSeats, String sizeName) { 
+	public Table(int maxSeats, String sizeName, String[] tableTypes) { 
 		this.mMaxSeats = maxSeats;
 		this.mSizeName = sizeName;
 		this.mDisplayAsSuggested = false;
 		this.mReservationsArray = new ArrayList<long[]>();
+		this.mTableTypes = tableTypes;
 		}
 	
 	public void setMaxSeats(int max) { this.mMaxSeats = max; }
@@ -56,8 +58,13 @@ public class Table {
 	public String getSizeName() { return this.mSizeName; }
 	public boolean getDisplayAsSuggested() { return this.mDisplayAsSuggested; }
 	public boolean getDisplayAsReserved() { return this.mDisplayAsReserved; }
-	
 
+	public boolean hasType(String type) {
+		for(String str : mTableTypes) {
+			if (str.equals(type)) { return true; }
+		}
+		return false;
+	}
 	public boolean isFreeDuring(long start, long end) {
 			this.sortReservations(); // Sort every time so it's more predictable - and so outdated info is removed
 

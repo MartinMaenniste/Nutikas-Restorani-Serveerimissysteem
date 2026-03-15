@@ -42,7 +42,7 @@ public class ServeClient {
         long start = stringDateTimetoInt(mForm.getDate(), mForm.getStartTime());
         long end = stringDateTimetoInt(mForm.getDate(), mForm.getEndTime());
 
-        return mTables.reserveTable(start, end, mForm.getGuests());
+        return mTables.reserveTable(start, end, mForm.getGuests(), mForm.getTableType());
     }
     /*
      * Only used to reserve tables randomly when program starts. 

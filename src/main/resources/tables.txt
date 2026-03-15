@@ -1,12 +1,12 @@
 11
-4 1
-4 1
-16 4
-6 2
-6 2
-4 1
-4 1
-4 1
-4 1
-6 2
-8 3
+4 1 inside quiet
+4 1 inside quiet
+16 4 inside
+6 2 inside
+6 2 inside
+4 1 outside
+4 1 outside
+4 1 outside
+4 1 outside
+6 2 outside
+8 3 outside

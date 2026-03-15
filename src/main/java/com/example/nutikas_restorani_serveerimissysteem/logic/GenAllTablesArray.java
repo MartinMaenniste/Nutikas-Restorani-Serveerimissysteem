@@ -44,8 +44,10 @@ public class GenAllTablesArray {
                         sizeName = "error";
                         break;
                 }
+                String tableType = s.nextLine().trim();
+                String[] types = tableType.split(" ");
 
-                mTables[i] = new Table(maxSeats, sizeName);
+                mTables[i] = new Table(maxSeats, sizeName, types);
             }
 
         }catch (FileNotFoundException e) {
@@ -59,7 +61,5 @@ public class GenAllTablesArray {
     public Table[] getArray() {
         return this.mTables;
     }
-    public int arraySize() {
-        return this.mTables.length;
-    }
+
 }
