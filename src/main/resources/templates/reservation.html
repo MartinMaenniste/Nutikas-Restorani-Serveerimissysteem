@@ -3,78 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Restaurant</title>
-    <style>
-	div > p {
-  	    text-align: center;
-	}
-
-	.inside {
-	    display: table;
-	    background: #454444;
-	    width: 450px;
-	}
-	.outside {
-	    display: table;
-	    margin-right: 0;
-	    padding-top: 20px;
-	    background: #40342a;
-	    width: 450px;
-	}
-
-	.left {
-	    display: inline-block;
-	}
-	.right {
-	    display: inline-block;
-	    float: right;
-	    margin-right: 10px;
-	}
-
-	.sideBySide {
-	    display: flex;
-	}
-
-        .smallTable {
-	    background: #c1c918;
-	    width: 50px;
-	    height: 50px;
-	    margin: 10px;
-	}
-	.mediumTable {
-	    background: #8f5d1b;
-	    height: 50px;
-	    width: 150px;
-	    margin: 10px;
-	    margin-left: auto;
-	    margin-right: auto;
-	}
-	.mediumTable2 {
-	    background: #c97d18;
-	    height: 50px;
-	    width: 200px;
-	    margin: 10px;
-	}
-	.bigTable {
-	    background: #523a1c;
-	    width: 70px;
-	    height: 200px;
-	    margin: 10px;
-	    margin-left: auto;
-	}
-	.counter {
-	    background: #662b1d;
-	    width: 100px;
-	    height: 150px;
-	    margin: 10px;
-	    margin-top: 60px;
-	}
-	#suggestedTable {
-	    background: #b32319;
-	}
-	#reservedTable {
-		background: #303030;
-	}
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reservation.css}" />
   </head>
   <body>
     <h1 th:text="${reservationInfo}"></h1>

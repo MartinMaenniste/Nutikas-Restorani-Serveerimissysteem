@@ -3,19 +3,21 @@
   <head>
     <meta charset="UTF-8">
     <title>Reservation form</title>
+	<script type="text/javascript" th:src="@{/js/index.js}"></script>
+
   </head>
 	<body>
 		<h1>Make your reservation</h1>
-			<form action="/reservation" method="post">
-				Name: <input type="text" name="name">
+			<form action="/reservation" method="post" onsubmit="return checkReservationLength();">
+				Name: <input type="text" name="name" id="resName">
 				<br/><br/>
-  				Amount of guests: <input type="number" name="guests">
+  				Amount of guests: <input type="number" name="guests" id="guestAmount" required>
 				<br/><br/>
-				Reservation date: <input type="date" name="date" id="dateInput">
+				Reservation date: <input type="date" name="date" id="dateField" required>
 				<br/><br/>
-				Start of reservation: <input type="time" name="startTime">
+				Start of reservation: <input type="time" name="startTime" id="startTime" required>
 				<br/><br/>
-				End of reservation: <input type="time" name="endTime">
+				End of reservation: <input type="time" name="endTime" id="endTime" required>
 				<br/><br/>
   				<button type="submit">Reserve</button>
 			</form>
