@@ -5,11 +5,17 @@ import com.example.nutikas_restorani_serveerimissysteem.FormInfo;
 
 import org.springframework.stereotype.Component;
 
+// ServeClient is used at PathController.java
+// Sort of a wrapper class to get Tables class and controller to exchange information
 @Component
 public class ServeClient {
-    private final Tables mTables;
-    private FormInfo mForm;
+    private final Tables mTables; // Wrapper to deal with Table[]
+    private FormInfo mForm; // The form submitted from index.html
 
+    /**
+     * Application works with times in the form of longs with value yymmddmmhh (year, month, day, hour, minute)
+     * Form gives them as strings - example Date: 2026-03-23, Start time: 12:30, End time: 15:45
+     */
     private long stringDateTimetoInt(String date, String time) {
         long dateTime = 0;
 
@@ -25,11 +31,10 @@ public class ServeClient {
         dateTime *= 100;
         dateTime += Integer.parseInt(timeParts[1]);
 
-//Name: John, Guests: 10, Date: 2026-03-11, Start time: 10:30, End time: 11:45
         return dateTime;
     }
 
-    public ServeClient(Tables tables) {
+    public ServeClient(Tables tables) { // Used by Spring boot to automatically set and populate Tables class
         this. mTables = tables;
     }
     public void setForm(FormInfo form) {
@@ -38,6 +43,10 @@ public class ServeClient {
     public Table[] getTables() { return mTables.getTables(); };
     public int getHowManyTables() {return mTables.getHowManyTables(); }
 
+    /**
+     * Used by PathController to try to reserve table before switching to the view that displays the reserved table.
+     * Returns if a suitable table was found and reserved
+     */
     public boolean reserveTable() {
         long start = stringDateTimetoInt(mForm.getDate(), mForm.getStartTime());
         long end = stringDateTimetoInt(mForm.getDate(), mForm.getEndTime());

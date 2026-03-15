@@ -7,17 +7,19 @@ import java.util.Comparator;
 
 public class Table {
 	private int mMaxSeats;
-	private String mSizeName; // Name of the size of the table - small/medium/big
-	private boolean mDisplayAsSuggested;
+	private String mSizeName; // Name of the size of the table - smallTable/mediumTable/mediumTable2/bigTable
+							// Used for styling the webpage. This is the class name of the div that represents the table
+	
+	private boolean mDisplayAsSuggested; // Id-s that are added for styling of webpage
 	private boolean mDisplayAsReserved;
 
 	private List<long[]> mReservationsArray; // array that holds long[2] - start and end of reservation
 					   // yyyymmddhhmm - as long
 
-	private String[] mTableTypes;
-	// String type - out/in/...
+	private String[] mTableTypes; // Specifies more information about the table - outside/inside/quiet (corner) etc.
 
 	private void sortReservations() {
+		// Construct long for current time-date to remove expired reservations
 		Calendar now = Calendar.getInstance();
 
 		long dateTimeNow = now.get(now.YEAR);
@@ -75,6 +77,9 @@ public class Table {
 			}
 			return true;
 	}
+	/**
+	 * Adds a new reservation - all necessary checks are done in the Tables class that wraps around this class.
+	 */
 	public void addReservation(long start, long end) {
 		long[] reservation = new long[2];
 
@@ -84,7 +89,7 @@ public class Table {
 		mReservationsArray.add(reservation);
 	}
 
-	// Testing
+	// Testing - used to make debugging easier. Remove from final application!
 	public void printAllReservations() {
 		for (long[] r : mReservationsArray) {
 			System.out.println("-- Start: " + r[0]);

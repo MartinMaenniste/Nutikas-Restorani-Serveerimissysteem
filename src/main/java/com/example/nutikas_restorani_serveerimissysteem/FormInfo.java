@@ -1,5 +1,6 @@
 package com.example.nutikas_restorani_serveerimissysteem;
 
+// The form into which html submitted form input fields are injected.
 public class FormInfo {
     private String name;
     private int guests;
@@ -22,8 +23,9 @@ public class FormInfo {
     public void setEndTime(String time) { this.endTime = time; }
     public void setTableType(String tableType) { this.tableType = tableType; }
 
+    // Testing - used to make debugging easier. Remove from the final application!
     @Override
-    public String toString() { // Not used in the final app, used for testing.
+    public String toString() {
         return "Name: " + this.name + ", Guests: " + this.guests + ", Date: " + this.date + ", Start time: " + this.startTime + ", End time: " + this.endTime + ", Table type: " + this.tableType;
     }
 }

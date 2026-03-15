@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+// Used by ServeClient to handle logic with specific tables
 @Component
 public class Tables{
 	private final GenAllTablesArray mGen; // Generator object that reads in mTables array
@@ -16,7 +17,7 @@ public class Tables{
 	// longs are used to store date-time by yyyymmddhhmm (year, month, day, hour, minute)
 	private int[] getFreeTablesIndexesDuring(long start, long end) {
 
-		int[] freeTables = new int[mTables.length];
+		int[] freeTables = new int[mTables.length]; // It is not known how many will be free, allocate space for all tables
 		int index = 0;
 		for(int i = 0; i < mTables.length; i++) {
 			if (mTables[i].isFreeDuring(start, end)) {
@@ -25,6 +26,8 @@ public class Tables{
 			}
 		}
 
+		// Return only the free tables.
+		// New array to not return unused space in array that was allocated.
 		int[] trimmed = new int[index];
 		for(int i = 0; i < index; i++) {
 			trimmed[i] = freeTables[i];
@@ -34,7 +37,7 @@ public class Tables{
 	}
 
 
-	public Tables(GenAllTablesArray generated) {
+	public Tables(GenAllTablesArray generated) { // Used by springboot to automatically read in tables array
 		mGen = generated;
 		this.mTables = generated.getArray();
 	}
@@ -42,6 +45,12 @@ public class Tables{
 	public Table[] getTables() { return this.mTables; };
 	public int getHowManyTables() { return this.mTables.length; }
 
+	/**
+	 * If possible, a table is found and reserved
+	 * long date-times are in form yyyymmddhhmm (year, month, day, hour, minute)
+	 * tableType is a specifier - outside/inside table or other specifiers such as a quiet corner
+	 * Return value indicates if a suitable table was found and reserved
+	 */
 	public boolean reserveTable(long startDateTime, long endDateTime, int guests, String tableType) {
 		
 		// The arrays hold indexes to tables in mTables array
@@ -95,6 +104,11 @@ public class Tables{
 
 		return true;
 	}
+	/**
+	 * Used to randomly reserve some tables when starting application.
+	 * Checks for suitable times and indexes are outside the scope of Tables class.
+	 * That means this is a dummy setter-type method. No return type and the only checks are just in case (although shouldn't be needed at all)
+	 */
 	public void reserveForRandReservation(long startDateTime, long endDateTime, int index) {
 		if (index < 0 || index >= mTables.length) { return; }
 		if ( endDateTime < startDateTime ) { return; }
@@ -104,7 +118,7 @@ public class Tables{
 	}
 
 
-	// Testing
+	// Testing - to simplify debugging. Not in the final application. Should be removed.
 	public void printAllTables() {
 		for (Table t : mTables) {
 			System.out.println("Seats: " + t.getMaxSeats() + ", Type: " + t.getSizeName() + ", Is suggested: " + t.getDisplayAsSuggested());

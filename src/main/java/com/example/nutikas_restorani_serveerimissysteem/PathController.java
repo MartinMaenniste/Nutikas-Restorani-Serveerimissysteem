@@ -12,15 +12,24 @@ import org.springframework.ui.Model;
 
 import java.util.Calendar;
 
+// All logic to control url paths
+// Extra responsibility is to generate random reservations when application starts.
 @Controller
 public class PathController {
-	private final ServeClient sc;
+	private final ServeClient sc; // Handles all the logic for changing fields in tables to style-display properly
 
+	/** 
+	 * Reserves tables randomly. Called from constructor.
+	 * Each table has a 50% chance to be reserved at the time of right now (reservations that don't overlap current time aren't added).
+	 * When a table is reserved, it is randomly reserved with start/end times:
+	 * - start time is from -3h to -1h from right now
+	 * - end time is from +1h to +4h from right now
+	*/
 	private void reserveRandomTables() {
 		Calendar now = Calendar.getInstance();
 
 		// The reservations are only for +- a few hours of time right now. Year, month and day remain the same
-		// This is the template that is used to construct start/end date-times
+		// This is the template that is used to construct final start/end date-times
 		long dateTime_template = now.get(now.YEAR);
 		dateTime_template *= 100;
 		dateTime_template += now.get(now.MONTH) + 1; // In Calendar, months start from 0
@@ -31,21 +40,22 @@ public class PathController {
 		for( int i = 0; i < n; i++ ) {
 			if (Math.random() < 0.5) {
 				// Reserve table at index i
+				
+				// Construct new values for date-time from the template
 				long startDateTime = dateTime_template * 100;
 				long endDateTime = dateTime_template * 100;
 
-				// Random reservations are up to -3h and +4h
-				// Minimum is +-1h
-				// Table must be reserved right now
 				long randStart = (int)(Math.random() * 3) + 1;
 				long randEnd = (int)(Math.random() * 4) + 1;
 
+				// Add random hour values by specified rules
 				startDateTime += now.get(now.HOUR_OF_DAY) - randStart;
 				endDateTime += now.get(now.HOUR_OF_DAY) + randEnd;
 
 				startDateTime *= 100;
 				endDateTime *= 100;
 
+				// Minutes can remain the same - could be added to template
 				startDateTime += now.get(now.MINUTE);
 				endDateTime += now.get(now.MINUTE);
 
@@ -56,7 +66,7 @@ public class PathController {
 
 	public PathController(ServeClient sc) {
 		this.sc = sc;
-		this.reserveRandomTables(); // When running the application, randomly reserve some tables for today
+		this.reserveRandomTables(); // When the application starts, randomly reserve some tables for today
 	}
 
 	@GetMapping("/")
@@ -66,13 +76,14 @@ public class PathController {
 
 	@PostMapping("/reservation") 
 	public String displayReservation(FormInfo form, Model model) {
-		//sc.printAllTables(); // Testing
 
 		sc.setForm(form);
 		boolean foundTable = sc.reserveTable();
+
+		// Styling that tells user if a suitable table was found
 		model.addAttribute("reservationInfo", foundTable ? "Your reservation" : "No suitable table found");
 		
-		// Since the tables are styled, inject fields individually, by the index.
+		// Since the different tables are styled differently, inject fields individually, by the index.
 		Table[] tables = sc.getTables();
 		for( int i = 0; i < tables.length; i++ ) {
 			model.addAttribute("table"+ (i+1), tables[i]);
