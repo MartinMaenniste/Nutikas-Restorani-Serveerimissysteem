@@ -23,7 +23,7 @@ function checkReservationLength() {
 	var end = Number(endValues[0]) * 60 + Number(endValues[1]);
 
 	if (end - start < 60) {
-		alert("Reservation must be atleast 1 hour long!");
+		window.alert("Reservation must be atleast 1 hour long!");
 		return false;
 	}
 	return true;
@@ -42,10 +42,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		startTimeField.setAttribute("min", getTimeString(date));
 		endTimeField.setAttribute("min", getTimeString(date));
-		
-		// Update when user changes fields
-		//startTimeField.addEventListener("input", checkReservationLength(startTimeField, endTimeField));
-		//endTimeField.addEventListener("input", checkReservationLength(startTimeField, endTimeField));
 });
 
 // Main logic for limiting the date selection is from:

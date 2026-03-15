@@ -2,6 +2,8 @@ package com.example.nutikas_restorani_serveerimissysteem.logic;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 
 public class Table {
 	private int mMaxSeats;
@@ -11,23 +13,35 @@ public class Table {
 
 	private List<long[]> mReservationsArray; // array that holds long[2] - start and end of reservation
 					   // yyyymmddhhmm - as long
-	private int mTotalReservations;
+
 	// String type - out/in/...
 
 	private void sortReservations() {
-		// Delete outdated
-		// sort by start - smaller numbers first (dates that come sooner)
+		Calendar now = Calendar.getInstance();
+
+		long dateTimeNow = now.get(now.YEAR);
+		dateTimeNow *= 100;
+		dateTimeNow += now.get(now.MONTH) + 1; // In Calendar, months start from 0
+		dateTimeNow *= 100;
+		dateTimeNow += now.get(now.DAY_OF_MONTH);
+		dateTimeNow *= 100;
+		dateTimeNow += now.get(now.HOUR_OF_DAY);
+		dateTimeNow *= 100;
+		dateTimeNow += now.get(now.MINUTE);
+		final long final_dateTimeNow = dateTimeNow;
+
+		mReservationsArray.sort(Comparator.comparingLong( l -> l[0])); // Sort by the start datetime value
+
+		mReservationsArray.removeIf(el -> el[1] <= final_dateTimeNow);
 	}
 
 	public Table() {
 		this.mMaxSeats = 0;
-		this.mTotalReservations = 0;
 		this.mDisplayAsSuggested = false;
 		this.mReservationsArray = new ArrayList<long[]>();
 	}
 	public Table(int maxSeats, String sizeName) { 
 		this.mMaxSeats = maxSeats;
-		this.mTotalReservations = 0;
 		this.mSizeName = sizeName;
 		this.mDisplayAsSuggested = false;
 		this.mReservationsArray = new ArrayList<long[]>();
