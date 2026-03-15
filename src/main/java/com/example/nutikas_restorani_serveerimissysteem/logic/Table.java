@@ -42,17 +42,10 @@ public class Table {
 	public String getSizeName() { return this.mSizeName; }
 	public boolean getDisplayAsSuggested() { return this.mDisplayAsSuggested; }
 	public boolean getDisplayAsReserved() { return this.mDisplayAsReserved; }
-	public List<long[]> getReservationsArray() { return this.mReservationsArray; }
 	
 
 	public boolean isFreeDuring(long start, long end) {
 			this.sortReservations(); // Sort every time so it's more predictable - and so outdated info is removed
-
-			/*int size = mReservationsArray.size();
-			for (int i = 0; i < size; i++) {
-				if( !(end < mReservationsArray.get(i)[0] || start > mReservationsArray.get(i)[1]) )
-					return false;
-			}*/
 
 			for(long[] r : mReservationsArray) {
 				if( !(end < r[0] || start > r[1]) ) {
@@ -68,5 +61,13 @@ public class Table {
 		reservation[1] = end;
 
 		mReservationsArray.add(reservation);
+	}
+
+	// Testing
+	public void printAllReservations() {
+		for (long[] r : mReservationsArray) {
+			System.out.println("-- Start: " + r[0]);
+			System.out.println("-- End: " + r[1]);
+		}
 	}
 }

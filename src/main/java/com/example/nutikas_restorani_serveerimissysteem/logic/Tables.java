@@ -40,6 +40,7 @@ public class Tables{
 	}
 	public void setTablesArray(Table[] arr) { this.mTables = arr; }
 	public Table[] getTables() { return this.mTables; };
+	public int getHowManyTables() { return this.mTables.length; }
 
 	public boolean reserveTable(long startDateTime, long endDateTime, int guests) {
 		int[] freeTables = getFreeTablesIndexesDuring(startDateTime, endDateTime);
@@ -72,10 +73,25 @@ public class Tables{
 
 		return true;
 	}
+	public void reserveForRandReservation(long startDateTime, long endDateTime, int index) {
+		if (index < 0 || index >= mTables.length) { return; }
+		if ( endDateTime < startDateTime ) { return; }
+		if ( !mTables[index].isFreeDuring(startDateTime, endDateTime) ) { return; }
 
+		mTables[index].addReservation(startDateTime, endDateTime);
+	}
+
+
+	// Testing
 	public void printAllTables() {
 		for (Table t : mTables) {
 			System.out.println("Seats: " + t.getMaxSeats() + ", Type: " + t.getSizeName() + ", Is suggested: " + t.getDisplayAsSuggested());
+		}
+	}
+	public void printAllReservations() {
+		for (int i = 0; i < mTables.length; i++) {
+			System.out.println("Table " + i + ":");
+			mTables[i].printAllReservations();
 		}
 	}
 }

@@ -34,22 +34,24 @@ public class ServeClient {
     }
     public void setForm(FormInfo form) {
         this.mForm = form;
-        System.out.println(this.mForm.toString());
     }
     public Table[] getTables() { return mTables.getTables(); };
+    public int getHowManyTables() {return mTables.getHowManyTables(); }
 
-    public void printAllTables() {
-        mTables.printAllTables();
-    }
     public boolean reserveTable() {
         long start = stringDateTimetoInt(mForm.getDate(), mForm.getStartTime());
         long end = stringDateTimetoInt(mForm.getDate(), mForm.getEndTime());
 
-        //System.out.println("Start: " + start + ", End: " + end); // Testing
-
         return mTables.reserveTable(start, end, mForm.getGuests());
     }
+    /*
+     * Only used to reserve tables randomly when program starts. 
+     */
+    public void reserveForRandReservation(long start, long end, int index) {
+        mTables.reserveForRandReservation(start, end, index);
+    }
 
-    
-    // Default reservation option - amount of people, from now + 1...3h?
+    // Testing
+    public void printAllTables() { mTables.printAllTables(); }
+    public void printAllReservations() { mTables.printAllReservations(); }
 }
