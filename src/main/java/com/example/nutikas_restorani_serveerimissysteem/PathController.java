@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+
 import java.util.Calendar;
 
 // All logic to control url paths
@@ -70,12 +71,16 @@ public class PathController {
 	}
 
 	@GetMapping("/")
-	public String displayIndex() {
-		return "index.html";
+	public String indexPage() {
+		return "index";
+	}
+	@GetMapping("/admin")
+	public String adminPage() {
+		return "admin";
 	}
 
 	@PostMapping("/reservation") 
-	public String displayReservation(FormInfo form, Model model) {
+	public String reservationPage(FormInfo form, Model model) {
 
 		sc.setForm(form);
 		boolean foundTable = sc.reserveTable();
