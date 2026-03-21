@@ -8,6 +8,7 @@ import java.lang.Integer;
 import org.springframework.stereotype.Component;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 // Used by ServeClient to handle logic with specific tables
 @Component
@@ -23,13 +24,15 @@ public class Tables{
 	// longs are used to store date-time by yyyymmddhhmm (year, month, day, hour, minute)
 	private List<Integer> getFreeTablesIndexesDuring(long start, long end) {
 
-		// Query the id WHERE ...
-		return mEM.createNativeQuery(
-			"SELECT t.id "
+		return mEM.createNativeQuery( // Get all id's minus ones where reservation time is matching
+			"SELECT t.id "			  // Reservation time is not matching if end < r.starttime or start > r.endtime (the 2 can't overlap since end > start everywhere)
 			+ "FROM tables AS t "
-			+ "JOIN reservations AS r "
-			+ "ON t.id=r.table_id "
-			+ "WHERE NOT (:end < r.start OR :start > r.end);", Integer.class)   // Specify that Integer should be returned
+			+ "WHERE NOT EXISTS ( "
+			+ "    SELECT r.id "
+			+ "    FROM reservations AS r "
+			+ "    WHERE r.table_id=t.id "
+			+ "    AND NOT (:end < r.starttime OR :start > r.endtime) "
+			+ ");", Integer.class)   // Specify that Integer should be returned
 			.setParameter("start", start)
 			.setParameter("end", end)
 			.getResultList();
@@ -39,16 +42,17 @@ public class Tables{
 			"SELECT MAX(id) FROM tables;").getSingleResult();
 	}
 
-
 	public Tables(GenAllTablesArray generated) { // Used by springboot to automatically read in tables array
 		mGen = generated;
 	}
+	public void fillDatabase() { this.mGen.populateTables(); }
+
 	public void setTablesArray(TableAsClass[] arr) { this.mTables = arr; }
 	public List<TableAsClass> getTables() { 
 		
-		return mEM.createQuery(
-			"SELECT * from tables"
-			+ "ORDER BY id;", TableAsClass.class)
+		return mEM.createNativeQuery(
+			"SELECT * from tables "
+			+ "ORDER BY id ASC;", TableAsClass.class)
 		.getResultList();
 		
 		};
@@ -62,6 +66,7 @@ public class Tables{
 	 * tableType is a specifier - outside/inside table or other specifiers such as a quiet corner
 	 * Return value indicates if a suitable table was found and reserved
 	 */
+	@Transactional
 	public boolean reserveTable(long startDateTime, long endDateTime, int guests, String tableType) {
 		
 		// Qurety tables join reservations
@@ -83,20 +88,8 @@ public class Tables{
 		List<Integer> freeTablesIndexes = getFreeTablesIndexesDuring(startDateTime, endDateTime);
 		int[] tableScores = new int[freeTablesIndexes.size()];
 
-		mEM.createNativeQuery(
-			"UPDATE tables"
-			+ "SET m_display_as_reserved = true;");
-		mEM.createNativeQuery(
-			"UPDATE tables"
-			+ "SET m_display_as_suggested = false;");
-
-		for(Integer i : freeTablesIndexes) {
-			mEM.createNativeQuery(
-				"UPDATE tables AS t"
-				+ "SET m_display_as_reserved = false"
-				+ "WHERE t.id = :i;")
-			.setParameter("i", i);
-		}
+		setReservedByList(freeTablesIndexes);
+		setAllSuggestedToFalse();
 		
 
 		// TODO - SCORING LOGIC DOESN'T WORK CURRENTLY!!!!
@@ -133,15 +126,8 @@ public class Tables{
 
 		int index = freeTablesIndexes.get(bestScoreIndex);
 
-		mEM.createNativeQuery(
-			"UPDATE reservations AS r"
-			+ "SET m_display_as_suggested = true;");
-		mEM.createNativeQuery(
-			"INSERT INTO reservations(starttime, endtime, table_id)"
-			+ "VALUES(:start, :end, :index);")
-		.setParameter("start", startDateTime)
-		.setParameter("end", endDateTime)
-		.setParameter("index", index);
+		setSuggestedToTrueById(index);
+		insertReservationToTable(startDateTime, endDateTime, index);
 
 		return true;
 	}
@@ -150,12 +136,12 @@ public class Tables{
 	 * Checks for suitable times and indexes are outside the scope of Tables class.
 	 * That means this is a dummy setter-type method. No return type and the only checks are just in case (although shouldn't be needed at all)
 	 */
+	@Transactional
 	public void reserveForRandReservation(long startDateTime, long endDateTime, int index) {
 		if ( endDateTime < startDateTime ) { return; }
 
 		int maxId = getMaxIdFromTables();
 		if (index < 0 || index > maxId) { return; }
-
 
 		boolean isReserved = (boolean) mEM.createNativeQuery(
 			"SELECT EXISTS(" 
@@ -164,20 +150,54 @@ public class Tables{
 			+ "WHERE table_id = :id "
 			+ "AND NOT (starttime > :e OR endtime < :s)" 
 			+ ");"
-			//+ "THEN 'TRUE';"
 		)
-		.setParameter("id", index)
+		.setParameter("id", index+1)
 		.setParameter("s", startDateTime)
 		.setParameter("e", endDateTime)
 		.getSingleResult();
 		if ( isReserved ) { return; }
 
+		insertReservationToTable(startDateTime, endDateTime, index+1);
+
+	}
+
+	public void setReservedByList(List<Integer> freeTablesIndexes) {
 		mEM.createNativeQuery(
-			"INSERT INTO reservations(starttime, endtime, table_id)"
-			+ "VALUES(:start, :end, :index);")
-			.setParameter("start", startDateTime)
-			.setParameter("end", endDateTime)
-			.setParameter("index", index);
+			"UPDATE tables "
+			+ "SET m_display_as_reserved = 'TRUE';")
+			.executeUpdate();
+
+		for(Integer i : freeTablesIndexes) {
+			mEM.createNativeQuery(
+				"UPDATE tables "
+				+ "SET m_display_as_reserved = 'FALSE'"
+				+ "WHERE id = :i;")
+			.setParameter("i", i)
+			.executeUpdate();
+		}
+	}
+	public void setAllSuggestedToFalse() {
+		mEM.createNativeQuery(
+			"UPDATE tables "
+			+ "SET m_display_as_suggested = 'FALSE';")
+			.executeUpdate();
+	}
+	public void setSuggestedToTrueById(int id) {
+		mEM.createNativeQuery(
+			"UPDATE tables "
+			+ "SET m_display_as_suggested = 'TRUE' "
+			+ "WHERE id=:id")
+			.setParameter("id", id)
+			.executeUpdate();
+	}
+	public void insertReservationToTable(long startDateTime, long endDateTime, int id) {
+		mEM.createNativeQuery(
+			"INSERT INTO reservations(starttime, endtime, table_id) "
+			+ "VALUES(:start, :end, :id);")
+		.setParameter("start", startDateTime)
+		.setParameter("end", endDateTime)
+		.setParameter("id", id)
+		.executeUpdate();
 	}
 
 

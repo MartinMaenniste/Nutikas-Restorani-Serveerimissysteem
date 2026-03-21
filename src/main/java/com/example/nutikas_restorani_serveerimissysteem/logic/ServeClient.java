@@ -39,12 +39,13 @@ public class ServeClient {
     public ServeClient(Tables tables) { // Used by Spring boot to automatically set and populate Tables class
         this. mTables = tables;
     }
+    public void fillDatabase() { this.mTables.fillDatabase(); }
+
     public void setForm(FormInfo form) {
         this.mForm = form;
     }
     public List<TableAsClass> getTables() {  return mTables.getTables(); }
     public int getHowManyTables() {return mTables.getHowManyTables(); }
-
     /**
      * Used by PathController to try to reserve table before switching to the view that displays the reserved table.
      * Returns if a suitable table was found and reserved

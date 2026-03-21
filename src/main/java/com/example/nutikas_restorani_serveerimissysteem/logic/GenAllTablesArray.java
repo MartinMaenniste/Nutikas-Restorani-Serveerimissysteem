@@ -13,7 +13,7 @@ import java.lang.Integer;
 
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityManager;
-import jakarta.annotation.PostConstruct;
+import org.springframework.transaction.annotation.Transactional;
 
 // Generates and sets Table array in Tables class
 @Component
@@ -21,13 +21,26 @@ public class GenAllTablesArray {
     @PersistenceContext
 	private EntityManager mEM;
 
-    @PostConstruct
-    public void init() {
-        this.genArray();
+    public void insertToTables(int maxSeats, String sizeName, String[] types) {
+        int id = (int) mEM.createNativeQuery(
+            "INSERT INTO tables(m_max_seats, m_size_name)"
+			+ "VALUES(:seats, :sizeName)"
+            + "RETURNING id;", Integer.class)
+		    .setParameter("seats", maxSeats)
+            .setParameter("sizeName", sizeName)
+            .getSingleResult();
+
+        for (String type : types) { // TODO - does not work? tabletypes is empty.
+            mEM.createNativeQuery(
+                "INSERT INTO tabletypes(type, table_id)"
+			    + "VALUES(:type, :table_id);")
+		        .setParameter("type", type)
+                .setParameter("table_id", id)
+                .executeUpdate();
+        }
     }
-
-
-    private void genArray() {
+    @Transactional
+    public void populateTables() {
         String path = "src/main/resources/tables.txt"; // Info for generating array of Table[] is stored inside the text file
         
         try(Scanner s = new Scanner(new File(path))) {
@@ -39,7 +52,6 @@ public class GenAllTablesArray {
             */
 
             int n = s.nextInt(); // First line of file is a number that indicates how many tables are stored in the file.
-
             for(int i = 0; i < n; i++) {
                 
                 /*
@@ -84,21 +96,8 @@ public class GenAllTablesArray {
                  * 
                  *  */
 
-                int id = (int) mEM.createNativeQuery(
-                "INSERT INTO tables(m_max_seats, m_size_name)"
-			    + "VALUES(:seats, :sizeName)"
-                + "RETURNING id;", Integer.class)
-		        .setParameter("seats", maxSeats)
-                .setParameter("sizeName", sizeName)
-                .getSingleResult();
+                insertToTables(maxSeats, sizeName, types);
 
-                for (String type : types) {
-                    mEM.createNativeQuery(
-                    "INSERT INTO tabletypes(type, table_id)"
-			        + "VALUES(:type, :table_id);")
-		            .setParameter("type", type)
-                    .setParameter("table_id", id);
-                }
             }
 
         }catch (FileNotFoundException e) {
