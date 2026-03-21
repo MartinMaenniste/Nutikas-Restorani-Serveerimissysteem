@@ -42,9 +42,9 @@ public class StartupRunner implements CommandLineRunner {
 				long randStart = (int)(Math.random() * 3) + 1;
 				long randEnd = (int)(Math.random() * 4) + 1;
 
-				// Add random hour values by specified rules
-				startDateTime += now.get(now.HOUR_OF_DAY) - randStart;
-				endDateTime += now.get(now.HOUR_OF_DAY) + randEnd;
+				// Add random hour values by specified rules - timezone is off by 2 hours, temporary solution.
+				startDateTime += now.get(now.HOUR_OF_DAY) + 2 - randStart;
+				endDateTime += now.get(now.HOUR_OF_DAY) + 2 + randEnd;
 
 				startDateTime *= 100;
 				endDateTime *= 100;

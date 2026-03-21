@@ -4,6 +4,7 @@ import com.example.nutikas_restorani_serveerimissysteem.logic.TableAsClass;
 import java.lang.Math;
 import java.util.List;
 import java.lang.Integer;
+import java.util.Calendar;
 
 import org.springframework.stereotype.Component;
 import jakarta.persistence.PersistenceContext;
@@ -104,6 +105,30 @@ public class Tables{
 		.setParameter("type", type)
 		.getSingleResult();
 	}
+	private void removeExpiredReservations() {
+		// Create a (long) datetime variable and use a simple query
+
+		Calendar now = Calendar.getInstance();
+
+		long dateTime = now.get(now.YEAR);
+		dateTime *= 100;
+		dateTime += now.get(now.MONTH) + 1; // In Calendar, months start from 0
+		dateTime *= 100;
+		dateTime += now.get(now.DAY_OF_MONTH);
+		dateTime *= 100;
+		dateTime += now.get(now.HOUR_OF_DAY) + 2; // Timezone is off by 2h. Temporary solution.
+		dateTime *= 100;
+		dateTime += now.get(now.MINUTE);
+
+		mEM.createNativeQuery(
+			"DELETE FROM reservations "
+			+ "WHERE endtime < :datetimenow;"
+		)
+		.setParameter("datetimenow", dateTime)
+		.executeUpdate();
+
+		System.out.println("*** Time now: " + dateTime);
+	}
 
 	public Tables(GenAllTablesArray generated) { // Used by springboot to automatically read in tables array
 		mGen = generated;
@@ -147,6 +172,11 @@ public class Tables{
 		// set displayAsSuggested to true where id=finalIndex
 
 		// The arrays hold id's to tables in mTables array
+
+
+
+		// Every reservation, remove expired reservations
+		removeExpiredReservations();
 		
 		List<Integer> freeTablesIds = getFreeTablesIdsDuring(startDateTime, endDateTime);
 		int[] tableScores = new int[freeTablesIds.size()];
