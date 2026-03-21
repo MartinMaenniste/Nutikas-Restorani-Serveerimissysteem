@@ -47,4 +47,9 @@ public class TableAsClass {
 	
 
 	public TableAsClass() {}
+
+	public int getMaxSeats() { return mMaxSeats; }
+	public String getSizeName() { return mSizeName; }
+	public boolean isDisplayAsSuggested() { return mDisplayAsSuggested; }
+	public boolean isDisplayAsReserved() { return mDisplayAsReserved; }
 }

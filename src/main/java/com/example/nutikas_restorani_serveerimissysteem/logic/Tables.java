@@ -235,7 +235,7 @@ public class Tables{
 		if ( endDateTime < startDateTime ) { return; }
 
 		int maxId = getMaxIdFromTables();
-		if (id =< 0 || id > maxId) { return; }
+		if (id <= 0 || id > maxId) { return; }
 
 		boolean isReserved = (boolean) mEM.createNativeQuery(
 			"SELECT EXISTS(" 
