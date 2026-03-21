@@ -19,18 +19,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class GenAllTablesArray {
     @PersistenceContext
-	private EntityManager mEM;
+	private EntityManager mEM; // Handles database queries
 
     public void insertToTables(int maxSeats, String sizeName, String[] types) {
+        // After getting info from file, insert into tables array
+        // Then add type to tables via tabletypes table.
+
         int id = (int) mEM.createNativeQuery(
-            "INSERT INTO tables(m_max_seats, m_size_name)"
+            "INSERT INTO restaurant_tables(m_max_seats, m_size_name)"
 			+ "VALUES(:seats, :sizeName)"
             + "RETURNING id;", Integer.class)
 		    .setParameter("seats", maxSeats)
             .setParameter("sizeName", sizeName)
             .getSingleResult();
 
-        for (String type : types) { // TODO - does not work? tabletypes is empty.
+        for (String type : types) {
             mEM.createNativeQuery(
                 "INSERT INTO tabletypes(type, table_id)"
 			    + "VALUES(:type, :table_id);")
@@ -41,7 +44,7 @@ public class GenAllTablesArray {
     }
     @Transactional
     public void populateTables() {
-        String path = "src/main/resources/tables.txt"; // Info for generating array of Table[] is stored inside the text file
+        String path = "src/main/resources/tables.txt"; // All info for database is stored here. Could be removed by making sql init file.
         
         try(Scanner s = new Scanner(new File(path))) {
             
@@ -86,16 +89,6 @@ public class GenAllTablesArray {
                 String tableType = s.nextLine().trim();
                 String[] types = tableType.split(" ");
 
-                /**
-                 * 
-                 * Add new row to table class
-                 * - maxSeats, sizeName
-                 * 
-                 * Add new row(s) to tabletypes table
-                 * - Id of TableAsClass, types[i]
-                 * 
-                 *  */
-
                 insertToTables(maxSeats, sizeName, types);
 
             }
@@ -105,7 +98,5 @@ public class GenAllTablesArray {
         }
     }
 
-    public GenAllTablesArray() {
-        //this.genArray();
-    }
+    public GenAllTablesArray() {}
 }

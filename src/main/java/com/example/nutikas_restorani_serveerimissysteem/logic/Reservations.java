@@ -10,6 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
+/**
+ * The java class that defines reservations table.
+ * foreign key to restaurant_tables.id
+ * Start and end times as a long number - yyyymmddhhmm (year, month, day, hour, minute)
+ * 
+ * Stores reservations for the restaurant tables
+ */
+
 @Entity
 @Table(name = "reservations")
 public class Reservations {

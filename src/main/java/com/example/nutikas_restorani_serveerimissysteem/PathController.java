@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import java.util.List;
 
 // All logic to control url paths
-// Extra responsibility is to generate random reservations when application starts.
 @Controller
 public class PathController {
 	private final ServeClient sc; // Handles all the logic for changing fields in tables to style-display properly

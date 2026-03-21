@@ -1,5 +1,6 @@
 package com.example.nutikas_restorani_serveerimissysteem;
 
+import com.example.nutikas_restorani_serveerimissysteem.logic.GenAllTablesArray;
 import com.example.nutikas_restorani_serveerimissysteem.logic.ServeClient;
 
 import java.util.Calendar;
@@ -7,12 +8,20 @@ import java.util.Calendar;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.CommandLineRunner;
 
+
+/**
+ * This class is responsible for filling the database with initial values.
+ * implements CommandLineRunner to make sure database is accessed after the Spring app has started up
+ * 
+ * Using GenAllTablesArray the class fills restaurant_tables and generates "random" reservations.
+ */
 @Component
 public class StartupRunner implements CommandLineRunner {
+    private final GenAllTablesArray gen;
     private final ServeClient sc;
 
     /** 
-	 * Reserves tables randomly. Called from constructor.
+	 * Reserves tables randomly.
 	 * Each table has a 50% chance to be reserved at the time of right now (reservations that don't overlap current time aren't added).
 	 * When a table is reserved, it is randomly reserved with start/end times:
 	 * - start time is from -3h to -1h from right now
@@ -31,9 +40,9 @@ public class StartupRunner implements CommandLineRunner {
 		dateTime_template += now.get(now.DAY_OF_MONTH);
 
 		int n = sc.getHowManyTables();
-		for( int i = 0; i < n; i++ ) {
+		for( int i = 1; i < n+1; i++ ) {
 			if (Math.random() < 0.5) {
-				// Reserve table at index i
+				// Reserve restaurant table with id = i
 				
 				// Construct new values for date-time from the template
 				long startDateTime = dateTime_template * 100;
@@ -58,11 +67,11 @@ public class StartupRunner implements CommandLineRunner {
 		}
 	}
 
-    public StartupRunner(ServeClient sc) {this.sc = sc;}
+    public StartupRunner(GenAllTablesArray gen, ServeClient sc) {this.gen = gen; this.sc=sc;}
 
     @Override
     public void run(String... args) { // After Spring has been initialised, fill the database.
-        sc.fillDatabase(); // Populates the "tables" and "tabletypes" tables (via tables.txt)
+        gen.populateTables(); // Populates the "tables" and "tabletypes" tables (via tables.txt)
         reserveRandomTables(); // Populates the reservations table
     }
 }

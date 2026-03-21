@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 // Changes spring-boot-starter-security's behaviour. 
-// Only admin needs authentication, other pages don't need authorisation.
+// Only admin needs authentication, other pages don't.
 @Configuration
 public class SecurityConfig {
 
