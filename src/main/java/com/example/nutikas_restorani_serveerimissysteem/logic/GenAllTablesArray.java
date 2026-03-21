@@ -1,17 +1,31 @@
 package com.example.nutikas_restorani_serveerimissysteem.logic;
 
 import com.example.nutikas_restorani_serveerimissysteem.logic.Tables;
-import com.example.nutikas_restorani_serveerimissysteem.logic.Table;
+import com.example.nutikas_restorani_serveerimissysteem.logic.TableAsClass;
 import org.springframework.stereotype.Component;
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.util.List;
+import java.lang.Integer;
+
+
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.annotation.PostConstruct;
 
 // Generates and sets Table array in Tables class
 @Component
 public class GenAllTablesArray {
-    private Table[] mTables;
+    @PersistenceContext
+	private EntityManager mEM;
+
+    @PostConstruct
+    public void init() {
+        this.genArray();
+    }
+
 
     private void genArray() {
         String path = "src/main/resources/tables.txt"; // Info for generating array of Table[] is stored inside the text file
@@ -25,9 +39,8 @@ public class GenAllTablesArray {
             */
 
             int n = s.nextInt(); // First line of file is a number that indicates how many tables are stored in the file.
-            mTables = new Table[n];
 
-            for(int i = 0; i < mTables.length; i++) {
+            for(int i = 0; i < n; i++) {
                 
                 /*
                 Every line is in the form of "seats sizeType type"
@@ -61,7 +74,31 @@ public class GenAllTablesArray {
                 String tableType = s.nextLine().trim();
                 String[] types = tableType.split(" ");
 
-                mTables[i] = new Table(maxSeats, sizeName, types);
+                /**
+                 * 
+                 * Add new row to table class
+                 * - maxSeats, sizeName
+                 * 
+                 * Add new row(s) to tabletypes table
+                 * - Id of TableAsClass, types[i]
+                 * 
+                 *  */
+
+                int id = (int) mEM.createNativeQuery(
+                "INSERT INTO tables(m_max_seats, m_size_name)"
+			    + "VALUES(:seats, :sizeName)"
+                + "RETURNING id;", Integer.class)
+		        .setParameter("seats", maxSeats)
+                .setParameter("sizeName", sizeName)
+                .getSingleResult();
+
+                for (String type : types) {
+                    mEM.createNativeQuery(
+                    "INSERT INTO tabletypes(type, table_id)"
+			        + "VALUES(:type, :table_id);")
+		            .setParameter("type", type)
+                    .setParameter("table_id", id);
+                }
             }
 
         }catch (FileNotFoundException e) {
@@ -70,9 +107,6 @@ public class GenAllTablesArray {
     }
 
     public GenAllTablesArray() {
-        this.genArray();
-    }
-    public Table[] getArray() {
-        return this.mTables;
+        //this.genArray();
     }
 }

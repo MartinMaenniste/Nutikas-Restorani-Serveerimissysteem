@@ -52,7 +52,7 @@ function checkReservationLength() {
  */
 document.addEventListener("DOMContentLoaded", function() {
 		var date = new Date();
-		var n = 2;
+		var n = 20;
 
 		var dateField = document.getElementById("dateField");
 		var startTimeField = document.getElementById("startTime");

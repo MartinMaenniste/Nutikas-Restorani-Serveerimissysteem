@@ -1,0 +1,36 @@
+
+services:
+  database:
+    container_name: postgresql
+    image: postgres:18
+    ports:
+      - "5332:5432"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: restoran
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U test -d restoran"] 
+      interval: 5s 
+      timeout: 5s 
+      retries: 5
+
+  springboot-app:
+    container_name: restorani-app
+    image: restorani-app
+    restart: on-failure
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_HOST: database
+      DATABASE_NAME: restoran
+      DATABASE_USER: test
+      DATABASE_PASSWORD: test
+      DATABASE_PORT: 5432
+    depends_on:
+      database:
+        condition: service_healthy
+
+# Docker file created by using example at https://medium.com/@yunuseulucay/end-to-end-spring-boot-with-mysql-and-docker-2c42a6e036c0
+# and changing according to my project.

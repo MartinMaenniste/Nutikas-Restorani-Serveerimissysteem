@@ -2,23 +2,46 @@ package com.example.nutikas_restorani_serveerimissysteem.logic;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.Calendar;
 import java.util.Comparator;
 
-public class Table {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Column;
+
+@Entity
+@Table(name = "tables")
+public class TableAsClass {
+	@Id  
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+    private Integer id;
+
 	private int mMaxSeats;
 	private String mSizeName; // Name of the size of the table - smallTable/mediumTable/mediumTable2/bigTable
 							// Used for styling the webpage. This is the class name of the div that represents the table
-	
-	private boolean mDisplayAsSuggested; // Id-s that are added for styling of webpage
+
+	@Column(nullable = false, columnDefinition = "boolean default false")
+	private boolean mDisplayAsSuggested;	 // Id-s that are added for styling of webpage
+	@Column(nullable = false, columnDefinition = "boolean default false")
 	private boolean mDisplayAsReserved;
 
-	private List<long[]> mReservationsArray; // array that holds long[2] - start and end of reservation
+	@OneToMany(mappedBy="table")
+	private List<Reservations> mReservations;
+	
+	//private List<long[]> mReservationsArray; // array that holds long[2] - start and end of reservation
 					   // yyyymmddhhmm - as long
 
-	private String[] mTableTypes; // Specifies more information about the table - outside/inside/quiet (corner) etc.
+	@OneToMany(mappedBy="table")
+	private Set<TableTypes> mTabletypes;
+	
+	//private String[] mTableTypes; // Specifies more information about the table - outside/inside/quiet (corner) etc.
 
-	private void sortReservations() {
+	/*private void sortReservations() {
 		// Construct long for current time-date to remove expired reservations
 		Calendar now = Calendar.getInstance();
 
@@ -36,20 +59,20 @@ public class Table {
 		mReservationsArray.sort(Comparator.comparingLong( l -> l[0])); // Sort by the start datetime value
 
 		mReservationsArray.removeIf(el -> el[1] <= final_dateTimeNow);
-	}
+	}*/
 
-	public Table() {
-		this.mMaxSeats = 0;
+	public TableAsClass() {
+		/*this.mMaxSeats = 0;
 		this.mDisplayAsSuggested = false;
-		this.mReservationsArray = new ArrayList<long[]>();
+		//this.mReservationsArray = new ArrayList<long[]>();*/
 	}
-	public Table(int maxSeats, String sizeName, String[] tableTypes) { 
+	/*public TableAsClass(int maxSeats, String sizeName, String[] tableTypes) { 
 		this.mMaxSeats = maxSeats;
 		this.mSizeName = sizeName;
 		this.mDisplayAsSuggested = false;
-		this.mReservationsArray = new ArrayList<long[]>();
+		//this.mReservationsArray = new ArrayList<long[]>();
 		this.mTableTypes = tableTypes;
-		}
+		}*/
 	
 	public void setMaxSeats(int max) { this.mMaxSeats = max; }
 	public void setSizeName(String sizeName) { this.mSizeName = sizeName; }
@@ -60,40 +83,42 @@ public class Table {
 	public String getSizeName() { return this.mSizeName; }
 	public boolean getDisplayAsSuggested() { return this.mDisplayAsSuggested; }
 	public boolean getDisplayAsReserved() { return this.mDisplayAsReserved; }
+	//public int getAmountOfReservations() { return this.mReservationsArray.size(); }
 
 	public boolean hasType(String type) {
-		for(String str : mTableTypes) {
+		/*for(String str : mTableTypes) {
 			if (str.equals(type)) { return true; }
 		}
+		return false;*/
 		return false;
 	}
 	public boolean isFreeDuring(long start, long end) {
-			this.sortReservations(); // Sort every time so it's more predictable - and so outdated info is removed
+			/*this.sortReservations(); // Sort every time so it's more predictable - and so outdated info is removed
 
 			for(long[] r : mReservationsArray) {
 				if( !(end < r[0] || start > r[1]) ) {
 					return false;
 				}
 			}
-			return true;
+			return true;*/
+			return false;
 	}
-	/**
-	 * Adds a new reservation - all necessary checks are done in the Tables class that wraps around this class.
-	 */
+	
+	 // Adds a new reservation - all necessary checks are done in the Tables class that wraps around this class.
 	public void addReservation(long start, long end) {
-		long[] reservation = new long[2];
+		/*long[] reservation = new long[2];
 
 		reservation[0] = start;
 		reservation[1] = end;
 
-		mReservationsArray.add(reservation);
+		mReservationsArray.add(reservation);*/
 	}
 
 	// Testing - used to make debugging easier. Remove from final application!
 	public void printAllReservations() {
-		for (long[] r : mReservationsArray) {
+		/*for (long[] r : mReservationsArray) {
 			System.out.println("-- Start: " + r[0]);
 			System.out.println("-- End: " + r[1]);
-		}
+		}*/
 	}
 }

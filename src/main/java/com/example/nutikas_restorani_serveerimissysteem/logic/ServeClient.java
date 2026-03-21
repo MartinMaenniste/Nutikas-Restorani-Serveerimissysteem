@@ -3,6 +3,8 @@ package com.example.nutikas_restorani_serveerimissysteem.logic;
 import com.example.nutikas_restorani_serveerimissysteem.logic.Tables;
 import com.example.nutikas_restorani_serveerimissysteem.FormInfo;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 // ServeClient is used at PathController.java
@@ -40,7 +42,7 @@ public class ServeClient {
     public void setForm(FormInfo form) {
         this.mForm = form;
     }
-    public Table[] getTables() { return mTables.getTables(); };
+    public List<TableAsClass> getTables() {  return mTables.getTables(); }
     public int getHowManyTables() {return mTables.getHowManyTables(); }
 
     /**

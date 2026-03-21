@@ -1,7 +1,7 @@
 package com.example.nutikas_restorani_serveerimissysteem;
 
 import com.example.nutikas_restorani_serveerimissysteem.logic.ServeClient;
-import com.example.nutikas_restorani_serveerimissysteem.logic.Table;
+import com.example.nutikas_restorani_serveerimissysteem.logic.TableAsClass;
 import com.example.nutikas_restorani_serveerimissysteem.FormInfo;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 
 import java.util.Calendar;
+import java.util.List;
 
 // All logic to control url paths
 // Extra responsibility is to generate random reservations when application starts.
@@ -89,9 +90,9 @@ public class PathController {
 		model.addAttribute("reservationInfo", foundTable ? "Your reservation" : "No suitable table found");
 		
 		// Since the different tables are styled differently, inject fields individually, by the index.
-		Table[] tables = sc.getTables();
-		for( int i = 0; i < tables.length; i++ ) {
-			model.addAttribute("table"+ (i+1), tables[i]);
+		List<TableAsClass> tables = sc.getTables();
+		for( int i = 0; i < tables.size(); i++ ) {
+			model.addAttribute("table"+ (i+1), tables.get(i));
 		}
 
 		return "reservation";
