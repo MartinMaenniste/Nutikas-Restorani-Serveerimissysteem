@@ -1,6 +1,6 @@
 package com.example.nutikas_restorani_serveerimissysteem.logic;
 
-import com.example.nutikas_restorani_serveerimissysteem.logic.TableAsClass;
+import com.example.nutikas_restorani_serveerimissysteem.logic.RestaurantTables;
 import java.lang.Math;
 import java.util.List;
 import java.lang.Integer;
@@ -150,10 +150,10 @@ public class Tables{
 		.setParameter("datetimenow", dateTime)
 		.executeUpdate();
 	}
-	public List<TableAsClass> getTables() { 
+	public List<RestaurantTables> getTables() { 
 		return mEM.createNativeQuery(
 			"SELECT * from restaurant_tables "
-			+ "ORDER BY id ASC;", TableAsClass.class)
+			+ "ORDER BY id ASC;", RestaurantTables.class)
 		.getResultList();
 	};
 	public int getHowManyTables() { 

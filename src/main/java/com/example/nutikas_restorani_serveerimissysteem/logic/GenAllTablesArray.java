@@ -1,7 +1,7 @@
 package com.example.nutikas_restorani_serveerimissysteem.logic;
 
 import com.example.nutikas_restorani_serveerimissysteem.logic.Tables;
-import com.example.nutikas_restorani_serveerimissysteem.logic.TableAsClass;
+import com.example.nutikas_restorani_serveerimissysteem.logic.RestaurantTables;
 import org.springframework.stereotype.Component;
 import java.util.Scanner;
 import java.io.File;

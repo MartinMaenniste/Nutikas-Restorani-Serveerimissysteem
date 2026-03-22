@@ -42,7 +42,7 @@ public class ServeClient {
     public void setForm(FormInfo form) {
         this.mForm = form;
     }
-    public List<TableAsClass> getTables() {  return mTables.getTables(); }
+    public List<RestaurantTables> getTables() {  return mTables.getTables(); }
     public int getHowManyTables() {return mTables.getHowManyTables(); }
 
     /**

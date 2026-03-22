@@ -1,13 +1,17 @@
 /**
  * Used to generate date strings suitable for html input field of type date
  * @param date - the Date class that is used to get current date
- * @param n  - how many days to add to current date (used to set the max value of the input field)
+ * @param n  - how many months to add to current date (used to set the max value of the input field)
  * Returns date in the form of "yyyy-mm-dd"
  */
 function getDateString(date, n) {
-	var day = String(date.getDate() + n).padStart(2, '0'); // String must be 2 characters long. Pad start with '0' to get "03" instead of "3" for example
+	date.setMonth(date.getMonth() + n);
+	var day = String(date.getDate()).padStart(2, '0'); // String must be 2 characters long. Pad start with '0' to get "03" instead of "3" for example
 	var month = String(date.getMonth() + 1).padStart(2, '0');
 	var year = date.getFullYear();
+
+	date.setMonth(date.getMonth() - n);
+
 	return `${year}-${month}-${day}`;
 }
 /**
@@ -47,12 +51,12 @@ function checkReservationLength() {
 
 /**
  * Used to set rules to form input elements
- * Date can only be from today to +n days (specified at the start of the program)
+ * Date can only be from today to +n months (specified at the start of the program)
  * Time can't be smaller than cuurent time
  */
 document.addEventListener("DOMContentLoaded", function() {
 		var date = new Date();
-		var n = 20;
+		var n = 1;
 
 		var dateField = document.getElementById("dateField");
 		var startTimeField = document.getElementById("startTime");
@@ -63,6 +67,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		startTimeField.setAttribute("min", getTimeString(date));
 		endTimeField.setAttribute("min", getTimeString(date));
+
+		startTimeField.setAttribute("max", "20:00"); // Restaurant closes at 21.00 for maintenance.
+		endTimeField.setAttribute("max", "21:00");
 });
 
 // Main logic for limiting the date selection is from:
