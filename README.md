@@ -6,7 +6,7 @@ Broneeringut tehes on võimalik filtreerida kuupäeva+kellaaja ning inimeste arv
 ## Tehniline pool
 Projekt kasutab veebiliidest, mille kaudu kasutaja saab teha broneeringuid. Veebiliides on loodud Java Spring Boot raamistiku kasutades, java programmeerimiskeeles. Lisaks on kasutatud *Thymeleaf*, et HTML dünaamiliselt luua.<br/>
 Andmed on salvestatud postgresql andmebaasi. Andmebaas ja Spring rakendus jooksevad kahe eraldi docker konteineri sees, mida haldab docker compose.<bt/>
-Andmebaasis on 3 tabelit, mis on defineeritud klassides Reservations.java, TableTypes.java ja TableAsClass.java
+Andmebaasis on 3 tabelit, mis on defineeritud klassides Reservations.java, TableTypes.java ja RestaurantTables.java (src/main/java/com/ecxample/nutikas_reserveerimissysteem/logic)
 ## Näide projekti kasutamisest
 Projekti kasutamiseks on vaja:<br/>
  - Docker + Docker compose<br/>
@@ -22,7 +22,7 @@ docker info
 git clone https://github.com/MartinMaenniste/Nutikas-Restorani-Serveerimiss-steem.git
 cd https://github.com/MartinMaenniste/Nutikas-Restorani-Serveerimissysteem.git
 
-#Alternatiiv on laadida alla ZIP kaust ja seal sees terminal avada
+#Alternatiiv on laadida alla ZIP kaust, lahti pakkida ja seal sees terminal avada
 
 #Programmi jooksutamine (linux süsteemi puhul peab dockerit enamasti juurkasutajana jooksutama - sudo)
 docker compose up
@@ -38,8 +38,8 @@ Projekt ei saanud täiesti valmis, järgnevad on teadaolevad vead, mille paranda
  Järgnevalt on loetletud mida ma planeerisin lisada, aga ei jõudnud:
  - Admin leht - On näha kõiki laudu. Hiirega laua kohale minnes on näha kõiki selle laua reserveeringuid. Peale vajutades avaneb eraldi leht, kus saab muuta/kustutada reserveeringuid.<br/>
  - Üldine programmi silumine - Veebilehtede väljanägemine; Programmi läbi testimine, vigade leidmine ja parandamine; Teadaolevate puuduste likvideerimine<br/>
- - Laudade kuvamine reservation.html lehel - targemini. (Plaan oli teha ruudustik, kus ruudud saavad olla lauad või muud ette defineeritud asjad - põrand, sein, uks jne. See võimaldab teha terviklikumat programmi, kuhu saab lisada loogika näiteks laudade paigutuse muutmise (nt. admin vaadet kasutades ja koodis laudade ehitamine) ja mitme laua korraga reserveerimise kohta.)
- - Testide lisamine. (Testide väga algeline faas on salvestatud old-files kausta - samal ajal otsustasin lisada andmebaasi projekti, aga tahtsin alles hoida ning hiljem muuta esimesi teste, mille pealt oleksin teinud rohkem teste. Testimine töötaks sarnaselt olemasolevatele testidele, aga kasutades teisi meetodeid. Samuti on võimalik otse andmebaasi teha päringuid.)
+ - Laudade kuvamine reservation.html lehel - targemini üles ehitada. (Plaan oli teha ruudustik, kus ruudud saavad olla lauad või muud ette defineeritud asjad - põrand, sein, uks jne. See võimaldab teha terviklikumat programmi, kuhu saab lisada loogika näiteks laudade paigutuse muutmise - näiteks admin vaadet kasutades ja koodis laudade ehitamine -  ja mitme laua peale reserveeringu jaotamisest.)
+ - Testide lisamine. (Testide väga algeline faas on salvestatud old-files kausta - samal ajal otsustasin lisada projekti andmebaasi, hoidsin esimest kahte testi alles, et neid hiljem muuta. Nende pealt oleksin teinud rohkem teste. Testimine töötaks sarnaselt olemasolevatele testidele, aga kasutades teisi meetodeid. Samuti on võimalik otse andmebaasi teha päringuid.)
  ## Programmi loomisel tekkinud probleemid
 Suurim probleem programmi loomisel oli ajapuudus. Kuna tegin seda ajateenistuse kõrvalt, teadsin ette, et väljaõppe tõttu terve esimene nädal ei ole võimalik arvutit avada. Teise nädala alguses sain teada ka, et suur osa teisest nädalast on kinni. Seetõttu pidin teadlikult tegema otsuseid, mida jõuan selle ajaga teha ja mida mitte. Proovisin teha programmi, mille kaudu ma näitan rohkem enda sügavamaid teadmisi programmeerimisest ja enda kiiret õppevõimet. Seetõttu jäid unarusse programmi ülesehitus/disain ja detailide silumine.<br>
 Lühidalt kirjeldatud suuremad probleemid arendamisel:<br/>
@@ -48,4 +48,4 @@ Lühidalt kirjeldatud suuremad probleemid arendamisel:<br/>
  - Pole pikalt veebirakendust arendanud, läks aega HTML, CSS baasteadmiste meeldetuletamiseks.<br/>
  - Kasutasin sisuliselt esimest korda projektihaldust maven/gradle. Ülikoolis puutusin sellega kokku, aga väga vähe.<br/>
  - Vaba aja olemuse tõttu oli koodi kirjutamine katkendlik ja tihti oli vaja kiirustada - ei olnud aega rahulikult läbi mõelda.<br/>
-Probleemidele leidsin lahendusi internetist otsingumootoriga märksõnade otsimise kaudu. Kui ei olnud kindel, mida peaksin otsima või ei leidnud tavalise otsimise kaudu lahendust, kasutasin AI tööriista ChatGPT, et seletada mulle konteksti või tuua näiteid, et oskaksin kaasa mõelda ja infot juurde otsida. Veebis leitu ja AI vastuses nähtu aitasid luua terviklikuma pildi sellest, kuidas võiks lahendus välja näha. Seda oli keeruline dokumenteerida, sest proovisin kasutada tööriistu vaid metoodikast aru saamiseks ning seetõttu ei otsinud suuremaid lõike valmis koodi, vaid üksnes üksikuid ridu või funktsioone. Omandatud arusaama testimiseks proovisin koodi ikkagi ise kirjutada, pannes kokku erinevad osad, mis jäid meelde erinevatest allikatest. Suuremad koodijupid, mille ma kopeerisin on kommentaaridega täpsustatud.
+Probleemidele leidsin lahendusi internetist otsingumootoriga märksõnade otsimise kaudu. Kui ei olnud kindel, mida peaksin otsima või ei leidnud tavalise otsimise kaudu lahendust, kasutasin AI tööriista ChatGPT, et seletada mulle konteksti või tuua näiteid, et oskaksin kaasa mõelda ja infot juurde otsida. Veebis leitu ja AI vastuses nähtu aitasid luua terviklikuma pildi sellest, kuidas võiks lahendus välja näha. Seda oli keeruline dokumenteerida, sest proovisin kasutada tööriistu vaid metoodikast aru saamiseks ning seetõttu ei otsinud suuremaid lõike valmis koodi, vaid üksnes üksikuid ridu või meetodeid. Omandatud arusaama testimiseks proovisin koodi ikkagi ise kirjutada, pannes kokku erinevad osad, mis jäid meelde erinevatest allikatest. Suuremad koodijupid, mille ma kopeerisin on kommentaaridega täpsustatud.
