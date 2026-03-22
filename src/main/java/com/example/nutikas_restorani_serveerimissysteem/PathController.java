@@ -1,7 +1,7 @@
 package com.example.nutikas_restorani_serveerimissysteem;
 
 import com.example.nutikas_restorani_serveerimissysteem.logic.ServeClient;
-import com.example.nutikas_restorani_serveerimissysteem.logic.TableAsClass;
+import com.example.nutikas_restorani_serveerimissysteem.logic.RestaurantTables;
 import com.example.nutikas_restorani_serveerimissysteem.FormInfo;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +38,7 @@ public class PathController {
 		model.addAttribute("reservationInfo", foundTable ? "Your reservation" : "No suitable table found");
 		
 		// Since the different tables are styled differently, inject fields individually, by the index.
-		List<TableAsClass> tables = sc.getTables();
+		List<RestaurantTables> tables = sc.getTables();
 		for( int i = 0; i < tables.size(); i++ ) {
 			model.addAttribute("table"+ (i+1), tables.get(i));
 		}

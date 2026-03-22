@@ -1,6 +1,6 @@
 package com.example.nutikas_restorani_serveerimissysteem.logic;
 
-import com.example.nutikas_restorani_serveerimissysteem.logic.TableAsClass;
+import com.example.nutikas_restorani_serveerimissysteem.logic.RestaurantTables;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -29,5 +29,5 @@ public class TableTypes {
 
     @ManyToOne
     @JoinColumn(name="table_id", nullable=false)
-    private TableAsClass table;
+    private RestaurantTables table;
 }

@@ -27,7 +27,7 @@ import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "restaurant_tables")
-public class TableAsClass {
+public class RestaurantTables {
 	@Id  
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
     private Integer id;
@@ -46,7 +46,7 @@ public class TableAsClass {
 	private Set<TableTypes> mTabletypes;
 	
 
-	public TableAsClass() {}
+	public RestaurantTables() {}
 
 	public int getMaxSeats() { return mMaxSeats; }
 	public String getSizeName() { return mSizeName; }
