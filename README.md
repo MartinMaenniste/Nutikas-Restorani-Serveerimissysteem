@@ -9,16 +9,8 @@ Andmed on salvestatud postgresql andmebaasi. Andmebaas ja Spring rakendus jookse
 Andmebaasis on 3 tabelit, mis on defineeritud klassides Reservations.java, TableTypes.java ja TableAsClass.java
 ## Näide projekti kasutamisest
 Projekti kasutamiseks on vaja:<br/>
- - Java JDK25<br/>
- - Maven<br/>
  - Docker + Docker compose<br/>
 ```
-#Java olemasolu/versiooni kontrollimine
-java --version
-
-#Maven olemasolu kontrollimine
-mvn --version
-
 #Dockeri kontrollimine (näha on nii dockeri versiooni kui ka docker compose kohta infot)
 docker info
 
@@ -41,7 +33,7 @@ Projekt ei saanud täiesti valmis, järgnevad on teadaolevad vead, mille paranda
  - Üldine programmi silumine - Veebilehtede väljanägemine; Programmi läbi testimine, vigade leidmine ja parandamine; Teadaolevate puuduste likvideerimine<br/>
  - Laudade kuvamine reservation.html lehel - targemini. (Plaan oli teha ruudustik, kus ruudud saavad olla lauad või muud ette defineeritud asjad - põrand, sein, uks jne. See võimaldab teha terviklikumat programmi, kuhu saab lisada loogika näiteks laudade paigutuse muutmise (nt. admin vaadet kasutades ja koodis laudade ehitamine) ja mitme laua korraga reserveerimise kohta.)
  - Testide lisamine. (Testide väga algeline faas on salvestatud old-files kausta - samal ajal otsustasin lisada andmebaasi projekti, aga tahtsin alles hoida ning hiljem muuta esimesi teste, mille pealt oleksin teinud rohkem teste. Testimine töötaks sarnaselt olemasolevatele testidele, aga kasutades teisi meetodeid. Samuti on võimalik otse andmebaasi teha päringuid.)
- ## Programmi loomisel tehtud eeldused ja tekkinud probleemid
+ ## Programmi loomisel tekkinud probleemid
 Suurim probleem programmi loomisel oli ajapuudus. Kuna tegin seda ajateenistuse kõrvalt, teadsin ette, et väljaõppe tõttu terve esimene nädal ei ole võimalik arvutit avada. Teise nädala alguses sain teada ka, et suur osa teisest nädalast on kinni. Seetõttu pidin teadlikult tegema otsuseid, mida jõuan selle ajaga teha ja mida mitte. Proovisin teha programmi, mille kaudu ma näitan rohkem enda sügavamaid teadmisi programmeerimisest ja enda kiiret õppevõimet. Seetõttu jäid unarusse programmi ülesehitus/disain ja detailide silumine.<br>
 Lühidalt kirjeldatud suuremad probleemid arendamisel:<br/>
  - Kasutasin esimest korda Spring raamistikku.<br/>
