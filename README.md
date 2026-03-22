@@ -10,6 +10,8 @@ Andmebaasis on 3 tabelit, mis on defineeritud klassides Reservations.java, Table
 ## Näide projekti kasutamisest
 Projekti kasutamiseks on vaja:<br/>
  - Docker + Docker compose<br/>
+Windowsi puhul on vaja docker desktop rakendust. Kui see avada, on võimalik docker compose käsku kasutada.
+Linuxi puhul peab kasutama enda süsteemi paketihaldurit, et laadida docker compose (mille sõltuvus on docker). Näiteks apt ja RPM puhul peab paigaldama docker-compose-plugin paketi. https://docs.docker.com/compose/install/linux/<br/>
 ```
 #Dockeri kontrollimine (näha on nii dockeri versiooni kui ka docker compose kohta infot)
 docker info
@@ -21,6 +23,7 @@ cd https://github.com/MartinMaenniste/Nutikas-Restorani-Serveerimissysteem.git
 #Programmi jooksutamine (linux süsteemi puhul peab dockerit enamasti juurkasutajana jooksutama - sudo)
 docker compose up
 ```
+Kui programm on käivitatud, saab veebiliidest kasutada lehel localhost:8080<br/>
 ## Teadaolevad puudused
 Projekt ei saanud täiesti valmis, järgnevad on teadaolevad vead, mille parandamiseks ei jätkunud aega:<br/>
  - Vormi täitmisel seotud kellaajaline piirang ei kontrolli kuupäeva (teoorias vältib minevikku reserveerimist, aga praktikas teeb programmi kasutamatuks. Vaja kuupäev enne täita ja seda kellaaja juures kontrollida).<br/>
