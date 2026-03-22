@@ -10,8 +10,9 @@ Andmebaasis on 3 tabelit, mis on defineeritud klassides Reservations.java, Table
 ## Näide projekti kasutamisest
 Projekti kasutamiseks on vaja:<br/>
  - Docker + Docker compose<br/>
- - Git (pole vajalik, kui git clone asemel laadida alla kui ZIP ja lahti pakkida)
-Windowsi puhul on vaja docker desktop rakendust. Kui see avada, on võimalik docker compose käsku kasutada.
+ - Git (pole vajalik, kui git clone asemel laadida alla kui ZIP ja lahti pakkida)<br/>
+Windowsi puhul on vaja docker desktop rakendust. Kui see avada, on võimalik docker compose käsku kasutada.<br/>
+Windowsi puhul on lisaks vaja ka wsl (Windows Subsystem for Linux) - https://learn.microsoft.com/en-us/windows/wsl/install<br/>
 Linuxi puhul peab kasutama enda süsteemi paketihaldurit, et laadida docker compose (mille sõltuvus on docker). Näiteks apt ja RPM puhul peab paigaldama docker-compose-plugin paketi. https://docs.docker.com/compose/install/linux/<br/>
 ```
 #Dockeri kontrollimine (näha on nii dockeri versiooni kui ka docker compose kohta infot)
