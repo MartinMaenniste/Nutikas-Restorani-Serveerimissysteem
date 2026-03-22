@@ -1,6 +1,6 @@
 package com.example.nutikas_restorani_serveerimissysteem;
 
-import com.example.nutikas_restorani_serveerimissysteem.logic.GenAllTablesArray;
+import com.example.nutikas_restorani_serveerimissysteem.logic.PopulateDB;
 import com.example.nutikas_restorani_serveerimissysteem.logic.ServeClient;
 
 import java.util.Calendar;
@@ -13,11 +13,11 @@ import org.springframework.boot.CommandLineRunner;
  * This class is responsible for filling the database with initial values.
  * implements CommandLineRunner to make sure database is accessed after the Spring app has started up
  * 
- * Using GenAllTablesArray the class fills restaurant_tables and generates "random" reservations.
+ * Using PopulateDB the class fills restaurant_tables and generates "random" reservations.
  */
 @Component
 public class StartupRunner implements CommandLineRunner {
-    private final GenAllTablesArray gen;
+    private final PopulateDB gen;
     private final ServeClient sc;
 
     /** 
@@ -67,7 +67,7 @@ public class StartupRunner implements CommandLineRunner {
 		}
 	}
 
-    public StartupRunner(GenAllTablesArray gen, ServeClient sc) {this.gen = gen; this.sc=sc;}
+    public StartupRunner(PopulateDB gen, ServeClient sc) {this.gen = gen; this.sc=sc;}
 
     @Override
     public void run(String... args) { // After Spring has been initialised, fill the database.

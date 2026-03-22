@@ -15,11 +15,15 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityManager;
 import org.springframework.transaction.annotation.Transactional;
 
-// Generates and sets Table array in Tables class
+/**
+ * This class is responsible for populating the database every time the appplication starts.
+ * It is called by StartupRunner after Spring has finished initialisation.
+ */
 @Component
-public class GenAllTablesArray {
+public class PopulateDB {
     @PersistenceContext
 	private EntityManager mEM; // Handles database queries
+    String path = "src/main/resources/tables.txt"; // All info for database is stored here. Could be removed by making sql init file.
 
     public void insertToTables(int maxSeats, String sizeName, String[] types) {
         // After getting info from file, insert into tables array
@@ -44,7 +48,6 @@ public class GenAllTablesArray {
     }
     @Transactional
     public void populateTables() {
-        String path = "src/main/resources/tables.txt"; // All info for database is stored here. Could be removed by making sql init file.
         
         try(Scanner s = new Scanner(new File(path))) {
             
@@ -98,5 +101,5 @@ public class GenAllTablesArray {
         }
     }
 
-    public GenAllTablesArray() {}
+    public PopulateDB() {}
 }
