@@ -30,8 +30,6 @@ docker compose up
 Kui programm on käivitatud, saab veebiliidest kasutada lehel localhost:8080<br/>
 ## Teadaolevad puudused
 Projekt ei saanud täiesti valmis, järgnevad on teadaolevad vead, mille parandamiseks ei jätkunud aega:<br/>
- - Vormi täitmisel seotud kellaajaline piirang ei kontrolli kuupäeva (teoorias vältib minevikku reserveerimist, aga praktikas teeb programmi kasutamatuks. Vaja kuupäev enne täita ja seda kellaaja juures kontrollida).<br/>
- - Vormi täitmisel minimaalne kellaaeg on praegune ajahetk, võetuna kasutaja arvutist. Peale selle on problemaatiline ka asjaolu, et ei võeta arvesse restorani avamise aega. (Pigem väike muudatus - vaja ajatsoone ja minimaalseks väärtuseks maksimaalne kahest võimalusest.)<br/>
  - Arvulise aja moodustamisel kasutatavale java.util.Calendar muutujale on vaja lisada ajatsoon. Vaikimisi kasutatav on Eesti ajast 2 tundi maas.<br/>
  - Programm on disainitud vaid ühele kasutajale korraga. Kui samaaegselt mitu kasutajat prooviksid lauda reserveerida, läheks programm katki. (Selleks peab programmi targemini üles ehitama. Andmebaasis on vaid mitte muutuvad andmed ja *styling* muutujad seada koodis)<br/>
  ## Tegemata jäi

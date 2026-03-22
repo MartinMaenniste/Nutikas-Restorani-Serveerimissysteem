@@ -8,7 +8,7 @@
   </head>
 	<body>
 		<h1>Make your reservation</h1>
-			<form th:action="@{/reservation}" method="post" onsubmit="return checkReservationLength();">
+			<form th:action="@{/reservation}" method="post" onsubmit="return checkReservation();" novalidate>
 				Name: <input type="text" name="name" id="resName">
 				<br/><br/>
   				Amount of guests: <input type="number" name="guests" id="guestAmount" required>
